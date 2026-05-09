@@ -152,7 +152,20 @@ const createStyler = (open, close, parent) => {
 const createBuilder = (self, _styler, _isEmpty) => {
 	// Single argument is hot path, implicit coercion is faster than anything
 	// eslint-disable-next-line no-implicit-coercion
-	const builder = (...arguments_) => applyStyle(builder, (arguments_.length === 1) ? ('' + arguments_[0]) : arguments_.join(' '));
+	const builder = (...arguments_) => {
+		const first = arguments_[0];
+		// Handle tagged template literal calls: first arg is a TemplateStringsArray
+		if (Array.isArray(first)) {
+			let string = first[0];
+			for (let i = 1; i < first.length; i++) {
+				string += arguments_[i] + first[i];
+			}
+
+			return applyStyle(builder, string);
+		}
+
+		return applyStyle(builder, (arguments_.length === 1) ? ('' + first) : arguments_.join(' '));
+	};
 
 	// We alter the prototype because we must return a function, but there is
 	// no way to create a function with a different prototype
