@@ -65,7 +65,7 @@ User prompt → /api/chat → Claude (with VirtualFileSystem snapshot)
 | `src/app/api/chat/route.ts` | Streaming chat endpoint: receives user messages + file state, runs Claude, executes tools, persists project. `maxSteps: 40`. |
 | `src/actions/` | Server actions for project CRUD (create-project, get-project, get-projects). |
 | `src/middleware.ts` | Protects `/api/projects/*` and `/api/filesystem/*`; returns 401 without a valid session. |
-| `prisma/schema.prisma` | SQLite schema: `User` (email, password) and `Project` (name, messages JSON, data JSON, userId). |
+| `prisma/schema.prisma` | SQLite schema: `User` (email, password) and `Project` (name, messages JSON, data JSON, userId). Always reference this file to understand the structure of data stored in the database. |
 
 ### Non-obvious design details
 
